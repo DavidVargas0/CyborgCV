@@ -1,6 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
-from pen_detection_from_frame import * 
+# from pen_detection_from_frame import * 
+from Zarak.pen_detection_from_video_v0_1 import *
 import importlib
 
 # importlib.reload()
@@ -25,11 +26,33 @@ print("Streaming... Close the window or press Ctrl+C to stop")
 
 frame_count = 0
 
+
+
 try:
     while True:
+        
         ret, frame = cam.read()
-        canvas_bounds,pen_pos = debug_first_frame(frame,False)
+        # canvas_bounds,pen_pos = debug_first_frame(frame,False)
+        
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # or 'XVID', 'MJPG', 'H264'
+        fps = 30  # Frames per second (can be any value since it's 1 frame)
+        height,width,layers = frame.shape
+        # Create video writer
+        filename = 'output_video.mp4'
+        video = cv2.VideoWriter(filename, fourcc, fps, (width, height))
 
+        # Write the single frame
+        video.write(frame)
+        video.release()
+        detector = ImprovedPenDetector(filename)
+        canvas_bounds, positions = detector.process_all_frames()
+
+        if canvas_bounds and positions:
+            detector.plot_trajectory(canvas_bounds, positions)
+        else:
+            print("❌ Failed to process video")
+        # Release the video writer
+        video.release()
         if not ret:
             print("Failed to capture frame")
             break
@@ -76,15 +99,18 @@ try:
 
         # Use scatter for more control
         # ax.scatter(50,50, c='red', s=100, edgecolors='white', linewidths=2)
-        if(pen_pos):
-            x = pen_pos[0]
-            y = pen_pos[1]
+        if(positions and positions.count > 0):
+            # x = pen_pos[0]
+            # y = pen_pos[1]
+            last_pos = positions[positions.count - 1]
+            x = last_pos[0]
+            y = last_pos[1]
             ax.plot(x,y, 'o', color='red', markersize=15, 
                 markeredgecolor='white', markeredgewidth=2)
             # ax.plot(x,y,'o')
             # Use scatter for more control
             ax.scatter(x,y, c='red', s=100, edgecolors='white', linewidths=2)
-            print("pen_pos = ", pen_pos[0], pen_pos[1])
+            # print("pen_pos = ", pen_pos[0], pen_pos[1])
         else:
             print("pen_pos is None")
         plt.pause(0.001)  # Small pause to update display

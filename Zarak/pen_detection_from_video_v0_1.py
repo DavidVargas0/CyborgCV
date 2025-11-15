@@ -315,8 +315,8 @@ class ImprovedPenDetector:
             if frame_idx % 30 == 0:
                 print(f"  Processed {frame_idx}/{self.total_frames} frames... (Found {len(positions)} markers)")
 
-        print(f"\n✓ Processed {frame_idx} frames")
-        print(f"✓ Detected marker in {len(positions)} frames ({len(positions) / frame_idx * 100:.1f}%)")
+        # print(f"\n✓ Processed {frame_idx} frames")
+        # print(f"✓ Detected marker in {len(positions)} frames ({len(positions) / frame_idx * 100:.1f}%)")
 
         self.cap.release()
 
