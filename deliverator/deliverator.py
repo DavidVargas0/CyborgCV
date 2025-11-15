@@ -1,67 +1,48 @@
 #!/usr/bin/env python3
-
 import socket
+import sys
 
-# =======================
-# CONFIGURATION
-# =======================
+# ===== CONFIG =====
+PI_IP = "brianpi"  # <-- CHANGE THIS to your Pi's IP address
+UDP_PORT = 5005         # Must match the Pi's port
 
-# Replace this with your Raspberry Pi's Bluetooth MAC address.
-# Example: "B8:27:EB:12:34:56"
-PI_BLUETOOTH_ADDR = "EE:24:62:F7:4B:91"  # <-- PUT YOUR PI'S ADDRESS HERE
-RFCOMM_CHANNEL = 1  # must match the server
+def send_color(r, g, b):
+    # Clamp to 0-255 just in case
+    r = max(0, min(255, r))
+    g = max(0, min(255, g))
+    b = max(0, min(255, b))
 
+    payload = bytes([r, g, b])  # Super compact 3-byte payload
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto(payload, (PI_IP, UDP_PORT))
+    sock.close()
+    print(f"Sent color R={r} G={g} B={b} to {PI_IP}:{UDP_PORT}")
 
-def send_color(sock, r, g, b):
-    """Send a single [R, G, B] packet as 3 raw bytes."""
-    r = max(0, min(255, int(r)))
-    g = max(0, min(255, int(g)))
-    b = max(0, min(255, int(b)))
-    sock.send(bytes([r, g, b]))
-    print(f"Sent color R={r}, G={g}, B={b}")
-
-
-def main():
-    print(f"Connecting to {PI_BLUETOOTH_ADDR} on RFCOMM channel {RFCOMM_CHANNEL}...")
-
-    # On Windows, use AF_BTH (Bluetooth) + BTPROTO_RFCOMM
-    sock = socket.socket(
-        socket.AF_BTH,
-        socket.SOCK_STREAM,
-        socket.BTPROTO_RFCOMM,
-    )
-    sock.connect((PI_BLUETOOTH_ADDR, RFCOMM_CHANNEL))
-    print("Connected!\n")
-
-    try:
-        print("Enter colors as: R G B  (0-255). Type 'quit' to exit.")
-        while True:
-            line = input("> ").strip()
-            if not line:
-                continue
-            if line.lower() in ("q", "quit", "exit"):
-                break
-
-            parts = line.split()
-            if len(parts) != 3:
-                print("Please enter exactly 3 numbers: R G B")
-                continue
-
-            try:
-                r, g, b = map(int, parts)
-            except ValueError:
-                print("Each value must be an integer between 0 and 255.")
-                continue
-
-            send_color(sock, r, g, b)
-
-    except KeyboardInterrupt:
-        print("\nInterrupted by user.")
-
-    finally:
-        sock.close()
-        print("Disconnected.")
-
+def parse_hex_color(hex_str):
+    """Accepts 'RRGGBB' or '#RRGGBB'."""
+    hex_str = hex_str.strip().lstrip('#')
+    if len(hex_str) != 6:
+        raise ValueError("Hex color must be 6 characters like 'FF0000' or '#FF0000'")
+    r = int(hex_str[0:2], 16)
+    g = int(hex_str[2:4], 16)
+    b = int(hex_str[4:6], 16)
+    return r, g, b
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 2:
+        # Usage: python send_color.py FF0000
+        r, g, b = parse_hex_color(sys.argv[1])
+        send_color(r, g, b)
+    elif len(sys.argv) == 4:
+        # Usage: python send_color.py 255 0 0
+        r = int(sys.argv[1])
+        g = int(sys.argv[2])
+        b = int(sys.argv[3])
+        send_color(r, g, b)
+    else:
+        print("Usage:")
+        print("  python send_color.py RRGGBB")
+        print("  python send_color.py R G B")
+        print("Examples:")
+        print("  python send_color.py FF0000      # red")
+        print("  python send_color.py 0 255 0     # green")
