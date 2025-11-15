@@ -28,7 +28,8 @@ frame_count = 0
 try:
     while True:
         ret, frame = cam.read()
-        # canvas_bounds,pen_pos = debug_first_frame(frame,False)
+        canvas_bounds,pen_pos = debug_first_frame(frame,False)
+
         if not ret:
             print("Failed to capture frame")
             break
@@ -41,9 +42,10 @@ try:
         ax.imshow(frame_rgb)
         ax.axis('off')
         ax.set_title(f"Live Stream - Frame: {frame_count}")
-        
+        # ax.plot(frame_count,100,'o')
+        # ax.plot(400,400,'o')
         # Update display
-        plt.pause(0.001)  # Small pause to update display
+        
         
         frame_count += 1
         
@@ -51,7 +53,42 @@ try:
         if frame_count % 30 == 0:
             cv2.imwrite(f"frame_{frame_count:04d}.png", frame)
             print(f"Saved frame {frame_count}")
-        
+        if(canvas_bounds):
+            # ax.plot()
+            canvasX = canvas_bounds[0]
+            canvasY = canvas_bounds[1]
+            canvasW = canvas_bounds[2]
+            canvasH = canvas_bounds[3]
+            ax.axhline(canvas_bounds[1])
+            ax.axhline(canvas_bounds[1] + canvas_bounds[3])
+            ax.plot(300,300,'o')
+            #x,y,w,he
+            ax.axvline(canvas_bounds[0])
+            ax.axvline(canvas_bounds[0] + canvas_bounds[2])
+
+            ax.plot(canvasX,canvasY,'o')
+            ax.plot(canvasX + canvasW, canvasY,'o')
+            ax.plot(canvasX, canvasY + canvasH,'o')
+            ax.plot(canvasX + canvasW, canvasY + canvasH,'o')
+            print("canvas_bounds = ",canvas_bounds[0],canvas_bounds[1],canvas_bounds[2],canvas_bounds[3])
+        else:
+            print("canvas boudns is None")
+
+        # Use scatter for more control
+        # ax.scatter(50,50, c='red', s=100, edgecolors='white', linewidths=2)
+        if(pen_pos):
+            x = pen_pos[0]
+            y = pen_pos[1]
+            ax.plot(x,y, 'o', color='red', markersize=15, 
+                markeredgecolor='white', markeredgewidth=2)
+            # ax.plot(x,y,'o')
+            # Use scatter for more control
+            ax.scatter(x,y, c='red', s=100, edgecolors='white', linewidths=2)
+            print("pen_pos = ", pen_pos[0], pen_pos[1])
+        else:
+            print("pen_pos is None")
+        plt.pause(0.001)  # Small pause to update display
+        ax.scatter(100, 100, c='blue', s=200, marker='o')
         # Check if window is closed
         if not plt.fignum_exists(fig.number):
             print("Window closed")

@@ -47,7 +47,7 @@ def detect_white_canvas(frame, show_debug=True):
         cv2.drawContours(contour_img, contours, -1, (0, 255, 0), 3)
         show_image('3. All White Contours', resize_for_display(contour_img))
 
-    imgs.append(contour_img)
+    # imgs.append(contour_img)
     if contours:
         # Sort by area
         sorted_contours = sorted(contours, key=cv2.contourArea, reverse=True)
@@ -76,10 +76,10 @@ def detect_white_canvas(frame, show_debug=True):
         area = cv2.contourArea(largest)
         x, y, w, h = cv2.boundingRect(largest)
 
-        print(f"\nCanvas Detection:")
-        print(f"  Area: {area:.0f} pixels")
-        print(f"  Position: ({x}, {y})")
-        print(f"  Size: {w}x{h}")
+        # print(f"\nCanvas Detection:")
+        # print(f"  Area: {area:.0f} pixels")
+        # print(f"  Position: ({x}, {y})")
+        # print(f"  Size: {w}x{h}")
 
         return (x, y, w, h)
 
@@ -105,7 +105,7 @@ def show_image( title,img, cmap=None):
 def detect_yellow_pen(frame, canvas_bounds, show_debug=True):
     """Detect yellow pen marker"""
     if canvas_bounds is None:
-        print("No canvas bounds - skipping pen detection")
+        # print("No canvas bounds - skipping pen detection")
         return None
 
     x, y, w, h = canvas_bounds
@@ -172,28 +172,28 @@ def detect_yellow_pen(frame, canvas_bounds, show_debug=True):
         show_image('9. Yellow Contours', resize_for_display(yellow_contours_img))
 
     if not contours:
-        print("\n⚠️  No yellow regions detected!")
-        print("   Try adjusting the yellow color range")
+        # print("\n⚠️  No yellow regions detected!")
+        # print("   Try adjusting the yellow color range")
         return None
 
     # Get largest yellow contour
     largest_yellow = max(contours, key=cv2.contourArea)
     area = cv2.contourArea(largest_yellow)
 
-    print(f"\nYellow Pen Detection:")
-    print(f"  Yellow regions found: {len(contours)}")
-    print(f"  Largest yellow area: {area:.0f} pixels")
+    # print(f"\nYellow Pen Detection:")
+    # print(f"  Yellow regions found: {len(contours)}")
+    # print(f"  Largest yellow area: {area:.0f} pixels")
 
     if area < 100:
-        print(f"  ⚠️  Area too small (minimum: 100 pixels)")
+        # print(f"  ⚠️  Area too small (minimum: 100 pixels)")
         return None
 
     # Get bounding box
     mx, my, mw, mh = cv2.boundingRect(largest_yellow)
     aspect_ratio = float(mw) / mh if mh > 0 else 0
 
-    print(f"  Bounding box: {mw}x{mh}")
-    print(f"  Aspect ratio: {aspect_ratio:.2f}")
+    # print(f"  Bounding box: {mw}x{mh}")
+    # print(f"  Aspect ratio: {aspect_ratio:.2f}")
 
     # Calculate center
     center_x = mx + mw // 2
@@ -203,8 +203,8 @@ def detect_yellow_pen(frame, canvas_bounds, show_debug=True):
     canvas_x = center_x
     canvas_y = h - center_y
 
-    print(f"  Center (image coords): ({center_x}, {center_y})")
-    print(f"  Center (canvas coords): ({canvas_x}, {canvas_y})")
+    # print(f"  Center (image coords): ({center_x}, {center_y})")
+    # print(f"  Center (canvas coords): ({canvas_x}, {canvas_y})")
 
     return (center_x, center_y, canvas_x, canvas_y)
 
@@ -224,9 +224,9 @@ def resize_for_display(img, max_width=800):
 
 def debug_first_frame(frame,show_debug):
     """Show all detections on first frame"""
-    print("\n" + "=" * 60)
-    print("DEBUGGING FIRST FRAME")
-    print("=" * 60)
+    # print("\n" + "=" * 60)
+    # print("DEBUGGING FIRST FRAME")
+    # print("=" * 60)
 
     # Read first frame
     # ret, frame = cap.read()
@@ -239,11 +239,11 @@ def debug_first_frame(frame,show_debug):
         show_image('0. Original Frame', resize_for_display(frame))
 
     # Detect canvas
-    print("\n--- STEP 1: CANVAS DETECTION ---")
+    # print("\n--- STEP 1: CANVAS DETECTION ---")
     canvas_bounds = detect_white_canvas(frame, show_debug)
 
     # Detect pen
-    print("\n--- STEP 2: PEN DETECTION ---")
+    # print("\n--- STEP 2: PEN DETECTION ---")
     pen_pos = detect_yellow_pen(frame, canvas_bounds, show_debug)
 
     # Draw final result
@@ -275,20 +275,20 @@ def debug_first_frame(frame,show_debug):
     if(show_debug):
         show_image('10. FINAL RESULT', resize_for_display(result_img))
 
-    print("\n" + "=" * 60)
-    print("PRESS ANY KEY TO CLOSE")
-    print("=" * 60)
-    print("\nWindows shown:")
-    print("  0. Original Frame")
-    print("  1. Grayscale")
-    print("  2. White Threshold")
-    print("  3. All White Contours")
-    print("  4. Top 3 Largest Areas")
-    print("  5. Canvas Region (BGR)")
-    print("  6. Canvas Region (HSV)")
-    print("  7-8. Yellow Detection Masks")
-    print("  9. Yellow Contours")
-    print("  10. FINAL RESULT ⭐")
+    # print("\n" + "=" * 60)
+    # print("PRESS ANY KEY TO CLOSE")
+    # print("=" * 60)
+    # print("\nWindows shown:")
+    # print("  0. Original Frame")
+    # print("  1. Grayscale")
+    # print("  2. White Threshold")
+    # print("  3. All White Contours")
+    # print("  4. Top 3 Largest Areas")
+    # print("  5. Canvas Region (BGR)")
+    # print("  6. Canvas Region (HSV)")
+    # print("  7-8. Yellow Detection Masks")
+    # print("  9. Yellow Contours")
+    # print("  10. FINAL RESULT ⭐")
     return canvas_bounds,pen_pos
     cv2.waitKey(0)
     cv2.destroyAllWindows()
