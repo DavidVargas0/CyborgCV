@@ -5,7 +5,7 @@ import neopixel
 
 # ===== NeoPixel config =====
 LED_PIN = board.D18      # GPIO18 (pin 12) – change if needed
-LED_COUNT = 16           # Set to 16 or 64 depending on your setup
+LED_COUNT = 64           # Set to 16 or 64 depending on your setup
 BRIGHTNESS = 0.2         # 0.0 to 1.0
 AUTO_WRITE = False       # We'll call show() manually
 PIXEL_ORDER = neopixel.GRB  # Typical for many NeoPixels
