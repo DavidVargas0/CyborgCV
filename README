@@ -69,45 +69,12 @@ The worker still pulls the tape, snaps the chalk line, or marks the surface. Pho
 - Training tool for new installers to learn "feel" for complex layouts  
 - Interactive installations where the crowd draws and the system guides  
 
----
-
-## Repo structure (proposed)
-
-```text
-.
-├── README.md
-├── docs/
-│   ├── photon_grid_wave.gif      # animated logo used in this README
-│   ├── photon_static.png         # original static logo (optional)
-│   └── team/
-│       ├── james-coleman.png
-│       ├── sergey-pigach.png
-│       ├── elcin-ertugrul.png
-│       ├── nathan-barnes.png
-│       ├── polina-ustinova.png
-│       ├── zarak-kasi.png
-│       ├── brian-murray.png
-│       ├── bell-wang.png
-│       └── david-vargas.png
-├── gh/
-│   └── photon_controller.gh      # Grasshopper definition(s)
-├── cv/
-│   └── tracker.py                # computer vision / camera calibration
-├── firmware/
-│   └── led_driver.ino            # example Arduino / microcontroller sketch
-└── config/
-    └── demo_config.yaml          # camera + LED + layout parameters
-```
-
-> **Note:** Folder names and files are suggestions—adapt to match the actual repo.
-
----
 
 ## Hardware
 
 - CV camera (webcam or industrial camera)
 - LED matrix / LED board
-- Microcontroller to drive LEDs (e.g. Arduino, ESP32, etc.)
+- Microcontroller to drive LEDs (code base was completed with a Rasberry Pi)
 - Laptop running Rhino + Grasshopper
 - Tripod / fixture for the camera and board
 
@@ -120,41 +87,48 @@ The worker still pulls the tape, snaps the chalk line, or marks the surface. Pho
 Grasshopper plugins for:
 
 - Image / video capture from the camera
-- Serial or network I/O to the LED controller
+- UDP Network I/O to Rasberry Pi
 - Computer vision stack (prototype) for tracking lines / markers
 
 ### Firmware
 
 Microcontroller firmware to:
 
-- Receive messages from Grasshopper
+- Receive messages from Grasshopper through UDP
 - Update LED pixels in real time
 
 ---
+
+## Third Party Packages
+
+The following packages are being used in this solution:
+`TODO `
 
 ## Running the demo (hackathon flow)
 
 ### 1. Set up the scene
 
 - Mount the camera with a clear view of the drawing surface
-- Place Photon's LED board where the worker can see it easily
+- Start the camera by using the `xx/xx` python script.
 
 ### 2. Calibrate
 
-- Place fiducial markers at known points
-- Run the calibration routine to map camera pixels → real-world coordinates
+- Camera will calibrate automatically, wait until calibration process fully completes.
 
 ### 3. Load a layout
 
 - Open the Grasshopper file
 - Reference a Rhino model / curves that should be drawn 1:1
 
-### 4. Start tracking
+### 4. Start Microcontroller process
+`TODO`
 
-- Run the CV script / component to track the marker / pen / chalk line
+### 5. Start tracking
+
+- Run the CV script to track the marker / pen / chalk line
 - Verify that the tracked position aligns with the model in Grasshopper
 
-### 5. Draw with guidance
+### 6. Draw with guidance
 
 - As the worker moves, Grasshopper computes the error vector to the nearest target
 - That error vector is encoded and sent to the LED board
