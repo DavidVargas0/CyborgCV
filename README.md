@@ -37,6 +37,9 @@ Photon asks: **what's the minimum amount of hardware and computation needed to a
 
 ## How it works (concept)
 
+<img width="960" height="540" alt="Cyborg-PHOTON-AEC Tech 2025" src="https://github.com/user-attachments/assets/f413f5fb-be9f-4470-b6d3-4e0923b98ace" />
+
+
 ### 1. Camera capture
 
 A CV camera looks at the drawing surface (wall, slab, panel, etc.). We calibrate it to the physical coordinate system using inexpensive markers.
@@ -98,10 +101,16 @@ Microcontroller firmware to:
 
 ---
 
-## Third Party Packages
+## Third-Party Packages
 
 The following packages are being used in this solution:
-`TODO `
+
+### Camera Tracker
+`TODO`
+
+### Trace Pen UDP server
+- rpi_ws281x
+- adafruit-circuitpython-neopixel
 
 ## Running the demo (hackathon flow)
 
@@ -120,7 +129,10 @@ The following packages are being used in this solution:
 - Reference a Rhino model / curves that should be drawn 1:1
 
 ### 4. Start Microcontroller process
-`TODO`
+
+- `cd /CyborgCV/raspberry-pi`
+- `conda activate <your-env-name>` (if you set up a Conda environment)
+- `sudo $(which python) cyborg.py` (you do have to run as a super user)
 
 ### 5. Start tracking
 
