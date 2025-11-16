@@ -1,7 +1,6 @@
 # Photon
 
 ![Photon logo](docs/photon_grid_wave.gif)
-# Photon
 
 
 Human-in-the-loop layout guidance using computer vision, Grasshopper, and an LED matrix.
