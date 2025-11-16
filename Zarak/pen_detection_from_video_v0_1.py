@@ -389,7 +389,7 @@ class ImprovedPenDetector:
 
 
 def main():
-    video_path = r"C:\Users\ZKasi\OneDrive - Thornton Tomasetti, Inc\Desktop\AEC tech Hackathon\Hackathon\Cyborg-Files-20251115T195546Z-1-001\Cyborg-Files\IMG_1315.MOV"
+    video_path = r"C:\Users\ZKasi\OneDrive - Thornton Tomasetti, Inc\Desktop\AEC tech Hackathon\Hackathon\Cyborg-Files-20251115T195546Z-1-001\Cyborg-Files\IMG_1318.MOV"
 
     print("\n" + "=" * 60)
     print("MARKER TRAJECTORY TRACKER")
