@@ -106,18 +106,31 @@ Microcontroller firmware to:
 The following packages are being used in this solution:
 
 ### Camera Tracker
-`TODO`
+- opencv-python
+- numpy
+```python
+# run in terminal
+pip install ./ComputerVision/requirements.txt
+```
 
 ### Trace Pen UDP server
 - rpi_ws281x
 - adafruit-circuitpython-neopixel
+```python
+# run in terminal
+pip install ./rasberry-pi/requirements.txt
+```
 
 ## Running the demo (hackathon flow)
 
 ### 1. Set up the scene
 
 - Mount the camera with a clear view of the drawing surface
-- Start the camera by using the `xx/xx` python script.
+- Start the camera by running.
+```
+cd ComputerVision
+python pen_detection_From_video_v0_2_1.py
+```
 
 ### 2. Calibrate
 
