@@ -1,7 +1,6 @@
 # Photon
 
 ![Photon logo](docs/photon_grid_wave.gif)
-# Photon
 
 
 Human-in-the-loop layout guidance using computer vision, Grasshopper, and an LED matrix.
@@ -77,18 +76,6 @@ The worker still pulls the tape, snaps the chalk line, or marks the surface. Pho
 .
 ├── README.md
 ├── docs/
-│   ├── photon_grid_wave.gif      # animated logo used in this README
-│   ├── photon_static.png         # original static logo (optional)
-│   └── team/
-│       ├── james-coleman.png
-│       ├── sergey-pigach.png
-│       ├── elcin-ertugrul.png
-│       ├── nathan-barnes.png
-│       ├── polina-ustinova.png
-│       ├── zarak-kasi.png
-│       ├── brian-murray.png
-│       ├── bell-wang.png
-│       └── david-vargas.png
 ├── gh/
 │   └── photon_controller.gh      # Grasshopper definition(s)
 ├── cv/
